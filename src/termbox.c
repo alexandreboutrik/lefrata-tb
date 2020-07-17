@@ -2,6 +2,8 @@
 #define _GNU_SOURCE // for wcstring, strcasestr
 #endif
 
+#define WITH_TRUECOLOR 1
+
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
@@ -552,6 +554,15 @@ uint8_t get_base_color(uint32_t color) {
   return 0; // default
 }
 
+int tb_truecolor() {
+return (
+#ifdef WITH_TRUECOLOR
+        1
+#else
+        0
+#endif
+    );
+}
 tb_color tb_rgb(uint32_t in) {
 #ifdef WITH_TRUECOLOR
   if (output_mode == 2)
@@ -582,7 +593,7 @@ static int convertnum(uint8_t num, char* buf) {
   return l;
 }
 
-uint8_t map_to_base_color(tb_color col) {
+uint32_t map_to_base_color(tb_color col) {
   if (col > 255)
     return TB_WHITE; // TB_DEFAULT;
   else if (col > 244) // light grays
@@ -932,3 +943,4 @@ static int wait_fill_event(struct tb_event *event, struct timeval *timeout) {
     }
   }
 }
+
