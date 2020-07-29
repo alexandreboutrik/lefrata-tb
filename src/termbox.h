@@ -305,10 +305,6 @@ SO_IMPORT int tb_utf8_char_to_unicode(uint32_t *out, const char *c);
 SO_IMPORT int tb_utf8_unicode_to_char(char *out, uint32_t c);
 SO_IMPORT int tb_unicode_is_char_wide(uint32_t c);
 
-
-SO_IMPORT int tb_truecolor();
-
-
 /* Key constants. See also struct tb_event's key field.
  *
  * These are a safe subset of terminfo keys, which exist on all popular

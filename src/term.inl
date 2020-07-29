@@ -145,7 +145,7 @@ static int init_term_builtin(void) {
 static bool detect_color_support() {
 #ifdef WITH_TRUECOLOR
   const char *colorterm = getenv("COLORTERM");
-  if (colorterm && ((strcmp(colorterm, "truecolor") == 0) || (strcmp(colorterm, "24bit") == 0))) {
+  if (colorterm && ((strcmp(colorterm) == "truecolor") == 0) || (strcmp(colorterm, "24bit") == 0)) {
     return 2; // true color support
   }
 #endif
@@ -283,7 +283,7 @@ static const int16_t ti_keys[] = {
 // terminfo file structure, from https://linux.die.net/man/5/term
 // ---------------------------
 // header section (12 bytes)
-// names section
+// names section 
 // bools section
 // numbers section
 // strings section
@@ -293,7 +293,7 @@ static void parse_terminfo(char * data) {
   int i;
   int16_t *header = (int16_t*)data;
 
-  if ((header[1] + header[2]) % 2) {
+  if ((header[1] + header[2]) % 2) { 
     header[2] += 1; // old quirk to align everything on word boundaries
   }
 
