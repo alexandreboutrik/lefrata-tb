@@ -6,6 +6,17 @@ Fork do [Le Frata](https://github.com/LeFrata/lefrata-cbp) utilizando a [termbox
 
 ## Compilação e Execução
 
+Compile o termbox caso não possua:
+
+```
+cd termbox  
+mkdir build ; cd build  
+cmake ..  
+make  
+cp lib* /usr/local/lib  
+cp ../src/termbox.h /usr/local/include
+```
+
 Este repositório utiliza o [nobuild](https://github.com/tsoding/nobuild) para compilação:
 
 ```
@@ -16,8 +27,7 @@ gcc nobuild.c -o nobuild
 Para executar:
 
 ```
-chmod +x ./bin/frata  
-./bin/frata
+./bin/frata # ou ./nobuild r
 ```
 
 ## Licença
