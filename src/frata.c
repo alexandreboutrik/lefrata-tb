@@ -19,8 +19,6 @@
 #define		FRATA_Y_INITIAL		2
 #define		FRATA_X				16
 
-#define		PALLETE_SIZE		(TB_WHITE - TB_BLACK + 1)
-
 #define		LEFT_ARROW			0x2190
 #define		UP_ARROW			0x2191
 #define		RIGHT_ARROW			0x2192
@@ -102,7 +100,7 @@ typedef struct GameData {
 	ScEntry		 Player;	/* jogador atual */
 	Score		 Scores;	/* ranking de scores, contém lista dos jogadores */
 
-	enum Scr	 Screen;	/* tela atual, define quais das telas deve desenhar */
+	enum Scr	 Screen;	/* tela atual */
 	enum Scr	 PrevScreen;/* tela anterior */
 	enum Abt	 About;		/* define o número da página da tela About */
 
@@ -129,7 +127,7 @@ void		 InitScreen(void);
 void		 Quit(GameData*);
 void		 Error(GameData*, i32, const char* Func);
 
-void		 CheckWindowSize(void);
+void		 CheckWindowSize(GameData*);
 
 void		 InitData(GameData*);
 void		 FreeData(GameData*);
@@ -224,10 +222,10 @@ void Error(GameData* Game, i32 Errsv, const char* Func) {
 /*
  * Verifica se a tela tem tamanho suficiente para o jogo
  */
-void CheckWindowSize(void) {
+void CheckWindowSize(GameData* Game) {
 
 	if (tb_width() < 103 || tb_height() < 23)
-		Error(NULL, 0, "tb_width() or tb_height()");
+		Error(Game, 0, "tb_width() or tb_height()");
 
 }
 
@@ -270,7 +268,7 @@ void GetCurrentDate(struct tm* Date) {
 
 void InitData(GameData *Game) {
 
-	CheckWindowSize();
+	CheckWindowSize(NULL);
 
 	GetCurrentDate(&(Game->Player.Date));
 
@@ -484,6 +482,11 @@ void HandleInput(GameData* Game) {
 
 		case TB_EVENT_MOUSE:
 			HandleMouse(Game);
+			break;
+
+		case TB_EVENT_RESIZE:
+			tb_resize();
+			CheckWindowSize(Game);
 			break;
 
 	}
@@ -881,8 +884,8 @@ void DrawHoles(GameData* Game) {
  */
 void ChangeScreen(GameData* Game, enum Scr NextScreen) {
 
-	Game->PrevScreen = Game->Screen;
-	Game->Screen = NextScreen;
+	Game->PrevScreen	=	Game->Screen;
+	Game->Screen		=	NextScreen;
 
 }
 
