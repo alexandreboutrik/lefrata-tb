@@ -4,7 +4,7 @@ Fork do [Le Frata](https://github.com/LeFrata/lefrata-cbp) utilizando a [termbox
 
 ## Compilação e Execução
 
-Este repositório utiliza o [nobuild] para compilação:
+Este repositório utiliza o [nobuild](https://github.com/tsoding/nobuild) para compilação:
 
 ```
 gcc nobuild.c -o nobuild  
