@@ -1,5 +1,7 @@
 # Le Frata
 
+![](https://github.com/alexandreboutrik/lefrata-tb/blob/main/media/GIF.gif)
+
 Fork do [Le Frata](https://github.com/LeFrata/lefrata-cbp) utilizando a [termbox](https://github.com/sanko/termbox2.c) ao invés da ncurses.
 
 ## Compilação e Execução
