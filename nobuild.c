@@ -6,8 +6,16 @@
 
 #define BIN_PATH "./bin"
 
+void		 mkdir_bin(void);
 void		 check_dep(const char* dep);
 void		 compile_src(const char* cfile);
+
+void mkdir_bin(void) {
+
+	if (PATH_EXISTS(BIN_PATH) != 1)
+		MKDIRS(BIN_PATH);
+
+}
 
 void check_dep(const char* dep) {
 
@@ -28,6 +36,8 @@ void compile_src(const char* cfile) {
 int main(int argc, const char* argv[]) {
 
 	GO_REBUILD_URSELF(argc, argv);
+
+	mkdir_bin();
 
 	check_dep("/usr/include/termbox.h");
 	check_dep("/usr/local/lib/libtermbox.a");
