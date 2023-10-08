@@ -19,37 +19,45 @@
 #define		FRATA_Y_INITIAL		2
 #define		FRATA_X				16
 
-#define		LEFT_ARROW			0x2190
-#define		UP_ARROW			0x2191
-#define		RIGHT_ARROW			0x2192
-#define		DOWN_ARROW			0x2193
+#define		LEFT_ARROW		0x2190
+#define		UP_ARROW		0x2191
+#define		RIGHT_ARROW		0x2192
+#define		DOWN_ARROW		0x2193
 
-#define		COPYRIGHT			0x00A9
-#define		DIAMOND				0x2666
+#define		COPYRIGHT		0x00A9
+#define		DIAMOND			0x2666
 
-#define		AC_ACUTE			0x00C1
-#define		AC_TILDE			0x00C3
-#define		C_CEDILLA			0x00C7
-#define		EC_ACUTE			0x00C9
-#define		OC_TILDE			0x00D5
-#define		AS_GRAVE			0x00E0
-#define		AS_ACUTE			0x00E1
-#define		AS_TILDE			0x00E3
-#define		S_CEDILLA			0x00E7
-#define		ES_ACUTE			0x00E9
-#define		ES_CIRCF			0x00EA
-#define		IS_ACUTE			0x00ED
-#define		OS_ACUTE			0x00F3
-#define		OS_TILDE			0x00F5
-#define		US_ACUTE			0x00FA
+#define		AC_ACUTE		0x00C1
+#define		AC_TILDE		0x00C3
+#define		C_CEDILLA		0x00C7
+#define		EC_ACUTE		0x00C9
+#define		OC_TILDE		0x00D5
+#define		AS_GRAVE		0x00E0
+#define		AS_ACUTE		0x00E1
+#define		AS_TILDE		0x00E3
+#define		S_CEDILLA		0x00E7
+#define		ES_ACUTE		0x00E9
+#define		ES_CIRCF		0x00EA
+#define		IS_ACUTE		0x00ED
+#define		OS_ACUTE		0x00F3
+#define		OS_TILDE		0x00F5
+#define		US_ACUTE		0x00FA
 
-typedef		int_fast32_t		i32;
-typedef		int_fast16_t		i16;
+#define		i32			int_fast32_t
+#define		i16			int_fast16_t
 
-typedef		uint_fast64_t		u64;
-typedef		uint_fast32_t		u32;
-typedef		uint_fast16_t		u16;
-typedef		uint_fast8_t		u8;
+#define		u64			uint_fast64_t
+#define		u32			uint_fast32_t
+#define		u16			uint_fast16_t
+#define		u8			uint_fast8_t
+
+#define		ru16		register	uint_fast16_t
+#define		ru8			register	uint_fast8_t
+#define		cu16		const		uint_fast16_t
+#define		cu8			const		uint_fast8_t
+
+#define		ci32		const		int_fast32_t
+#define		ci16		const		int_fast16_t
 
 enum Scr {
 	INITIAL = 0,
@@ -125,7 +133,7 @@ typedef struct GameData {
 
 void		 InitScreen(void);
 void		 Quit(GameData*);
-void		 Error(GameData*, i32, const char* Func);
+void		 Error(GameData*, ci32, const char* Func);
 
 void		 CheckWindowSize(GameData*);
 
@@ -149,23 +157,23 @@ void		 SaveScorePlayer(FILE*, ScEntry);
 void		 CreateIfDoesntExist(GameData*);
 void		 OpenFile(GameData*);
 
-void		 IsGameOver(GameData*, u16);
+void		 IsGameOver(GameData*, cu16);
 void		 UpdateLevel(GameData*);
 
 void		 MoveHoles(GameData*);
 void		 CalculateColision(GameData*);
 void		 GenerateNewHole(GameData*);
 
-void		 PrintLine(u8, u8, i16, u16);
-void		 PrintColumn(u8, u8, i16, u16);
-void		 PrintHole(u8, u8, i16, u16);
+void		 PrintLine(cu8, u8, ci16, u16);
+void		 PrintColumn(u8, cu8, ci16, u16);
+void		 PrintHole(u8, cu8, ci16, cu16);
 void		 PrintDiamond(u16);
 
 void		 DrawStreetLane(void);
 void		 DrawLifePoints(GameData*);
 void		 DrawLevelIndicator(GameData*);
 
-void		 DrawFrata(u8, u8);
+void		 DrawFrata(cu8, cu8);
 void		 DrawHoles(GameData*);
 
 void		 ChangeScreen(GameData*, enum Scr);
@@ -206,7 +214,7 @@ void Quit(GameData* Game) {
 
 }
 
-void Error(GameData* Game, i32 Errsv, const char* Func) {
+void Error(GameData* Game, ci32 Errsv, const char* Func) {
 
 	if (Func != NULL)
 		fprintf(stderr, "%s: ", Func);
@@ -510,7 +518,7 @@ void CopyStruct_ScEntry(ScEntry* Dst, ScEntry* Src) {
  */
 u16 CountEntries(FILE* File) {
 
-	u16 count = 0;
+	ru16 count = 0;
 	ScEntry Entry;
 
 	while ((fscanf(File, "%" SCNu64 " %d %d %d", &(Entry.Score), 
@@ -530,7 +538,7 @@ u16 CountEntries(FILE* File) {
  */
 void FillEntries(GameData* Game) {
 	
-	u16 i;
+	ru16 i;
 	for (i = 0; i < Game->Scores.np; i++) {
 
 		fscanf(Game->Scores.File, "%" SCNu64 " %d %d %d", &(Game->Scores.Players[i].Score),
@@ -592,7 +600,7 @@ void CreateIfDoesntExist(GameData* Game) {
  */
 void OpenFile(GameData* Game) {
 
-	u16 n;
+	ru16 n;
 
 	CreateIfDoesntExist(Game);
 
@@ -618,7 +626,7 @@ void OpenFile(GameData* Game) {
 /*
  * Reduz a quantidade de vidas e verifica se é Game Over
  */
-void IsGameOver(GameData* Game, u16 i) {
+void IsGameOver(GameData* Game, cu16 i) {
 
 	Game->Life--;
 
@@ -680,7 +688,7 @@ void UpdateLevel(GameData* Game) {
  */
 void MoveHoles(GameData* Game) {
 
-	u16 i;
+	ru16 i;
 
 	/* Quando refresh for >= 100, movemos os buracos */
 	if (Game->Refresh >= 100) {
@@ -702,7 +710,7 @@ void MoveHoles(GameData* Game) {
  */
 void CalculateColision(GameData* Game) {
 
-	u16 i;
+	ru16 i;
 
 	for (i = 0; i < Game->nb; i++) {
 
@@ -722,7 +730,7 @@ void CalculateColision(GameData* Game) {
 void GenerateNewHole(GameData* Game) {
 
 	bool existe = false;
-	u16 i;
+	ru16 i;
 
 	for (i = 0; i < Game->nb; i++) {
 
@@ -755,7 +763,7 @@ void GenerateNewHole(GameData* Game) {
  * Desenha uma linha de algo
  * n é a quantidade de espaços
  */
-void PrintLine(u8 y, u8 x, i16 Color, u16 n) {
+void PrintLine(cu8 y, u8 x, ci16 Color, u16 n) {
 
 	for (; n > 0; n--)
 		tb_string(x++, y, TB_WHITE, Color, " ");
@@ -766,7 +774,7 @@ void PrintLine(u8 y, u8 x, i16 Color, u16 n) {
  * Desenha uma coluna de algo
  * n é a quantidade de espaços
  */
-void PrintColumn(u8 y, u8 x, i16 Color, u16 n){
+void PrintColumn(u8 y, cu8 x, ci16 Color, u16 n){
 
 	for( ; n > 0; n--)
 		tb_string(x, y++, TB_WHITE, Color, " ");
@@ -776,7 +784,7 @@ void PrintColumn(u8 y, u8 x, i16 Color, u16 n){
 /*
  * Desenha um buraco na tela inicial de tamanho n
  */
-void PrintHole(u8 y, u8 x, i16 Color, u16 n){
+void PrintHole(u8 y, cu8 x, ci16 Color, cu16 n){
 
 	u8 w = (n / 2);
 
@@ -837,7 +845,7 @@ void DrawLevelIndicator(GameData* Game) {
 /*
  * Desenha o Frata na tela, na posição y e x
  */
-void DrawFrata(u8 y, u8 x) {
+void DrawFrata(cu8 y, cu8 x) {
 
 	PrintLine(y + 2, x, TB_MAGENTA, 9);
 
@@ -860,7 +868,7 @@ void DrawFrata(u8 y, u8 x) {
  */
 void DrawHoles(GameData* Game) {
 
-	u16 i;
+	ru16 i;
 
 	for (i = 0; i < Game->nb; i++) {
 
@@ -894,7 +902,7 @@ void ChangeScreen(GameData* Game, enum Scr NextScreen) {
  */
 void DrawScr_Initial(void) {
  
-	u8 j;
+	ru8 j;
 
 	for( j = 20; j < 24; j++)
 		PrintColumn(1, j, TB_CYAN, 9); // coluna de L
@@ -1029,7 +1037,7 @@ void DrawScr_Level(GameData* Game) {
  */
 void DrawScr_Pause(void) {
 
-	u8 x;
+	ru8 x;
 
 	PrintLine(4, 17, TB_YELLOW, 5);
 	PrintLine(6, 17, TB_YELLOW, 5);
@@ -1098,7 +1106,7 @@ void DrawScr_Pause(void) {
  */
 void DrawScr_GameOver(GameData* Game) {
 
-	u8 y, x;
+	ru8 y, x;
 
 	/*QUADRADOS ESQUERDA*/
 
@@ -1340,7 +1348,7 @@ void DrawScr_GameOver(GameData* Game) {
  */
 void DrawScr_Ranking(GameData* Game) {
 
-	u8 x;
+	ru8 x;
 
     //tabela
 	for (x = 17; x < 78; x++)
@@ -1463,7 +1471,7 @@ void DrawScr_SaveScore(GameData* Game) {
 
 	ClearScreen();
     
-	u8 x;
+	ru8 x;
 
     //s
 	PrintLine(7, 22, TB_BLUE, 5);
@@ -1574,7 +1582,7 @@ void DrawScr_SaveScore(GameData* Game) {
  */
 void DrawScr_AboutPage_1(void){
 
-	u8 i;
+	ru8 i;
 
 	/* Desenha ABOUT na tela */
 
@@ -1683,7 +1691,7 @@ void DrawScr_AboutPage_2(void){
 
 
 	/* Imprime as linhas de divisão da tela */
-	u8 i;
+	ru8 i;
 
 	for (i = 3; i < 23; i++) {
 		tb_char(50, i, TB_WHITE, TB_BLUE, ' ');
@@ -1785,7 +1793,7 @@ void ClearScreen(void) {
 
 	tb_clear_buffer();
 
-	u8 y;
+	ru8 y;
 
 	for (y = 0; y < 24; y++)
 		tb_empty(1, y, TB_BLACK, 103);
